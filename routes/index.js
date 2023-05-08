@@ -33,19 +33,7 @@ router.get('/', function(req, res, next) {
       url:"https://m.media-amazon.com/images/I/61eoyE0l9gS._SX679_.jpg"
     }
   ]
-  res.render('index', { Products });
+  res.render('index', { Products,admin: false });
 });
-
-router.post('/submit',(req,res) => {
-  
-  console.log(req.body);
-
-  MongoClient.connect(url,(err,db) => {
-
-    if(!err)
-      console.log("database connected!");
-  })
-
-  });
 
 module.exports = router;
