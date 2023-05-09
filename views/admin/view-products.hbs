@@ -1,0 +1,31 @@
+<section>
+    <div class="container">
+        <div class="row mt-3 mr-1">
+            <a class="btn btn-success ml-auto activate" href="/admin/add-product">Add Product</a>
+        </div>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each Products}}
+                <tr>
+                    <th scope="row">{{no}}</th>
+                    <td>{{title}}</td>
+                    <td>{{category}}</td>
+                    <td>{{description}}</td>
+                    <td><img src={{url}} style="width:100px;height:100px"/></td>
+                    <td>{{price}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</section>
