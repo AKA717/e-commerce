@@ -30,7 +30,7 @@ app.use(fileUpload());
 db.connect((err) => {
 
   if(err) console.log("connection error"+err);
-  else console.log("connection successful");
+  console.log("connection successful");
 });
 
 //routes
