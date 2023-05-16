@@ -1,24 +1,24 @@
-const mongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
 
-const state = {
+const url = 'mongodb://127.0.0.1:27017/';
+const dbName = 'shopping';
+let state = {
   db: null
 };
 
-module.exports.connect = function (done) {
+module.exports.connection = function (callback) {
 
-  const url = 'mongodb://127.0.0.1:27017/';
-  const dbName = 'shopping';
-
-  mongoClient.connect(url, (err, client) => {
+  console.log("connection called");
+  MongoClient.connect(url, function (err, client) {
     console.log("connect is called");
-    if(err) {
-      console.log(err);
-      return done(err);5
+    if (err) {
+      console.error('connection Error connecting to the database:', err);
+      callback(err);
+    } else {
+      state.db = client.db(dbName);
+      console.log('Database connection established');
+      callback(null);
     }
-
-    state.db = client.db(dbName);
-    console.log(state.db);
-    done();
   });
 };
 

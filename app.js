@@ -3,10 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var db = require('./config/connection');
 var hbs = require('express-handlebars');
 var fileUpload = require('express-fileupload');
-var db = require('./config/connection');
 
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
@@ -26,8 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
-db.connect((err) => {
-  console.log("connection called!")
+db.connection((err) => {
   if (err) {
     console.log(err);
   } else {

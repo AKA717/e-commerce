@@ -52,7 +52,7 @@ router.post('/add-product',(req,res) => {
 
     productHelper.addProduct(req.body,(result) => {
         console.log(result);
-        res.render('admin/add-product');
+        res.render('admin/add-product',{admin:true});
     });
 })
 
