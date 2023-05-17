@@ -50,9 +50,15 @@ router.get('/add-product',(req,res) => {
 
 router.post('/add-product',(req,res) => {
 
-    productHelper.addProduct(req.body,(result) => {
-        console.log(result);
-        res.render('admin/add-product',{admin:true});
+    productHelper.addProduct(req.body,(id) => {
+
+        let image = req.files.image;
+        image.mv('./public/product-images/'+id+'.jpg',(err,done) => {
+            if(!err)
+            {
+                res.render('admin/add-product',{admin:true});
+            }
+        })
     });
 })
 

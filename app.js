@@ -10,6 +10,16 @@ var fileUpload = require('express-fileupload');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 
+db.connection((err) => {
+  console.log("callback called in app.js");
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("Connection established");
+    // Start your Express app here
+  }
+});
+
 var app = express();
 
 // view engine setup
@@ -24,14 +34,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
-
-db.connection((err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("Connection established");
-  }
-});
 
 // routes
 app.use('/', usersRouter);
