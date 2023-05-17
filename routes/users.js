@@ -1,43 +1,17 @@
 var express = require('express');
 var router = express.Router();
-let MongoClient= require('mongodb').MongoClient;
+var productHelper = require('../helpers/product-helper');
 
 var url = 'mongodb://127.0.0.1:27017';
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+/* GET users home page. */
+router.get('/', async function(req, res, next) {
 
-  let Products = [
-    {
-      name:"IPAD AIR",
-      category:"tablet",
-      description:"Latest tech inside !!",
-      url:"https://m.media-amazon.com/images/I/71VbHaAqbML._SL1500_.jpg",
-      price:'80,000/-'
-    },
-    {
-      name:"IPHONE 14 PRO MAX",
-      category:"smartphone",
-      description:"Latest tech inside !!",
-      url:"https://m.media-amazon.com/images/I/31qeR3U2bdL._SY445_SX342_QL70_FMwebp_.jpg",
-      price:'90,000/-'
-    },
-    {
-      name:"MACBOOK AIR",
-      category:"laptop",
-      description:"Latest tech inside !!",
-      url:"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ22Z0yLMTKbgxItZTufhGQBaWWyw_dNkrFsLVt1NnzooqAltVAuorrNTjbK3D3iTMuA4e2Uh0GgOeNtbiXMmVvo8Uvc3duu9UhZAk7qkf8Pt1pI1bsBZgRdJoKHNBu04H87nc&usqp=CAc",
-      price:'1,00,000/-'
-    },
-    {
-      name:"IMAC",
-      category:"pc",
-      description:"Latest tech inside !!",
-      url:"https://m.media-amazon.com/images/I/61eoyE0l9gS._SX679_.jpg",
-      price:'1,15,000/-'
-    }
-  ]
-  res.render('index', { Products,admin: false });
+  let Products = await productHelper.getAllProducts();
+    console.log("admin data",Products[0]._id);
+
+    res.render('user/view-products', { admin: true, Products })
+
 });
 
 module.exports = router;

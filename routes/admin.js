@@ -6,7 +6,7 @@ var productHelper = require('../helpers/product-helper');
 router.get('/', async function (req, res, next) {
 
     let Products = await productHelper.getAllProducts();
-    console.log("admin data",Products);
+    console.log("admin data",Products[0]._id);
 
     res.render('admin/view-products', { admin: true, Products })
 });
