@@ -2,10 +2,12 @@ const { MongoClient } = require('mongodb');
 
 const url = "mongodb://127.0.0.1:27017/";
 const dbName = "shopping";
+
 let state = {
   db: null
 };
 
+//connecting the database.
 connection = async function (callback) {
     try {
       const client = await MongoClient.connect(url);
@@ -19,6 +21,7 @@ connection = async function (callback) {
     }
   };
 
+//inserting the data to the function 
 async function Insert(collectionName,document)
 {
   try
@@ -36,6 +39,19 @@ async function Insert(collectionName,document)
   }
 }
 
+//Get all products from database.
+const GetAll = () => {
+
+  return new Promise( async (resolve,reject) => {
+
+    const db = get();
+    let products = await db.collection('products').find().toArray();
+    resolve(products);
+
+  })
+}
+
+//returns the database object.
 get = function () {
   if (!state.db) {
     throw new Error('Database not initialized');
@@ -46,5 +62,6 @@ get = function () {
 module.exports = {
   connection,
   get,
-  Insert
+  Insert,
+  GetAll
 }
