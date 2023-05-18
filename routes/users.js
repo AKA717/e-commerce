@@ -27,6 +27,16 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to add the items to cart.
+router.get('/add-to-cart/:id',verifyLogin,(req,res) => {
+
+  console.log(req.params.id);
+
+  userHelper.addToCart(req.params.id,req.session.user._id).then(() => {
+    res.redirect('/')
+  })
+})
+
 //cart router to return the cart hbs file.
 router.get('/cart',verifyLogin,(req,res) => {
 
@@ -86,8 +96,8 @@ router.post('/signup',(req,res) => {
   userHelper.doSignUp(req.body).then((response) => {
     console.log(response);
 
-    response.session.loggedIn = true;
-    response.session.user = user;
+    req.session.loggedIn = true;
+    req.session.user = response;
 
     res.redirect('/');
   })
