@@ -20,29 +20,29 @@
         <div class="col-lg-6 mb-5 mb-lg-0">
           <div class="card">
             <div class="card-body py-5 px-md-5">
-              <form>
+              <form action="/signup" method="post">
                 <!-- 2 column grid layout with text inputs for the first and last names -->
                 <div class="row">
                   <div class="col-md-6 mb-4">
                     <div class="form-outline">
-                      <input type="text" id="form3Example1" class="form-control" placeholder="First Name"/>
+                      <input type="text" id="form3Example1" class="form-control" placeholder="First Name" name="firstname"/>
                     </div>
                   </div>
                   <div class="col-md-6 mb-4">
                     <div class="form-outline">
-                      <input type="text" id="form3Example2" class="form-control" placeholder="Last Name"/>
+                      <input type="text" id="form3Example2" class="form-control" placeholder="Last Name" name="lastname"/>
                     </div>
                   </div>
                 </div>
 
                 <!-- Email input -->
                 <div class="form-outline mb-4">
-                  <input type="email" id="form3Example3" class="form-control" placeholder="Email"/>
+                  <input type="email" id="form3Example3" class="form-control" placeholder="Email" name="email"/>
                 </div>
 
                 <!-- Password input -->
                 <div class="form-outline mb-4">
-                  <input type="password" id="form3Example4" class="form-control" placeholder="Password" />
+                  <input type="password" id="form3Example4" class="form-control" placeholder="Password" name="password"/>
                 </div>
 
                 <!-- Submit button -->

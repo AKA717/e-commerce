@@ -9,7 +9,7 @@ let state = {
 };
 
 //connecting the database.
-connection = async function (callback) {
+async function connection(callback) {
     try {
       const client = await MongoClient.connect(url);
       state.db = client.db(dbName);
@@ -52,8 +52,14 @@ const GetAll = () => {
   })
 }
 
+//signup
+
+const Signup = (userData) => {
+
+}
+
 //returns the database object.
-get = function () {
+function get() {
   if (!state.db) {
     throw new Error('Database not initialized');
   }
