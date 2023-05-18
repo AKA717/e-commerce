@@ -52,12 +52,6 @@ const GetAll = () => {
   })
 }
 
-//signup
-
-const Signup = (userData) => {
-
-}
-
 //returns the database object.
 function get() {
   if (!state.db) {

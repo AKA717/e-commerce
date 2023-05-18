@@ -1,9 +1,53 @@
 const db = require('../config/connection');
 const collection = require('../config/collection');
+const { response } = require('../app');
+const ObjectId = require('mongodb').ObjectId;
 
 
 module.exports = {
-  addProduct: (product,callback) => {
+
+  updateProduct : (productId,productDetails) => {
+
+    return new Promise((resolve,reject) => {
+
+      db.get().collection(collection.PRODUCT_COLLECTION)
+      .updateOne({_id:new ObjectId(productId)},{
+        $set:{
+          title:productDetails.title,
+          category:productDetails.category,
+          description:productDetails.description,
+          price:productDetails.price
+        }
+      }).then( response => {
+        console.log(response)
+        resolve();
+      })
+    })
+  },
+
+  getProductInfo : (productId) => {
+
+    return new Promise((resolve,reject) => {
+
+      db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:new ObjectId(productId)}).then(product => {
+        resolve(product);
+      })
+    })
+  },
+
+  deleteProduct : (productId) => {
+    return new Promise((resolve,reject) => {
+
+      db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({_id:new ObjectId(productId)}).then(response => {
+
+        console.log(response);
+        resolve(response);
+      })
+
+    })
+  },
+
+  addProduct : (product,callback) => {
 
     db.Insert(collection.PRODUCT_COLLECTION,product).then((result) => {
 
@@ -16,7 +60,7 @@ module.exports = {
     })
   },
 
-  getAllProducts: async () => {
+  getAllProducts : async () => {
     let products = await db.GetAll();
     return products;
   }

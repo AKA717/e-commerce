@@ -1,7 +1,6 @@
 const db = require('../config/connection');
 const collection = require('../config/collection');
 const bcrypt = require('bcrypt');
-const { emit } = require('nodemon');
 
 module.exports = {
     doSignUp: (userData) => {
