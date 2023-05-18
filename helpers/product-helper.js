@@ -1,9 +1,13 @@
 const db = require('../config/connection');
+const collection = require('../config/collection');
+
 
 module.exports = {
   addProduct: (product,callback) => {
 
-    db.Insert('products',product).then((result) => {
+    db.Insert(collection.PRODUCT_COLLECTION,product).then((result) => {
+
+      console.log(result);
 
       callback(result.insertedId.toString());
 
