@@ -5,6 +5,37 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
 
+    getCartProducts : (userId) => {
+
+        return new Promise(async (resolve,reject) => {
+
+            const cartItems = await db.get().collection(collection.CART_COLLECTION).aggregate([
+
+                {
+                    $match:{user:new ObjectId(userId)}
+                },
+                {
+                    $lookup:{
+                        from:'products',
+                        let:{productList:'$products'},
+                        pipeline:[
+                            {
+                                $match:{
+                                    $expr:{
+                                        $in:['$_id',"$$productList"]
+                                    }
+                                }
+                            }
+                        ],
+                        as:'cartItems'
+                    }
+                }
+            ]).toArray()
+
+            resolve(cartItems[0].cartItems);
+        })
+    },
+
     addToCart : (productId,userId) => {
 
         return new Promise(async (resolve,reject) => {
