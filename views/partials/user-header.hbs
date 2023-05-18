@@ -5,17 +5,19 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#">Shopping Cart</a>
+            <a class="navbar-brand" href="/">Shopping Cart</a>
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="/">Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Cart</a>
+                    <a class="nav-link" href="/cart">Cart</a>
                 </li>
+                {{#if user}}
                 <li class="nav-item">
                     <a class="nav-link" href="#">Orders</a>
                 </li>
+                {{/if}}
             </ul>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"

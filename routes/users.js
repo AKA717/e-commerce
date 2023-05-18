@@ -3,8 +3,20 @@ var router = express.Router();
 var productHelper = require('../helpers/product-helper');
 var userHelper = require('../helpers/user-helper');
 
+const verifyLogin = (req,res,next) => {
+
+  if(req.session.loggedIn)
+  {
+    next();
+  }
+  else
+  {
+    res.redirect('/login');
+  }
+}
+
 /* GET users home page. */
-router.get('/', async function(req, res, next) {
+router.get('/', async function(req, res, next){
 
   let user = req.session.user;
   console.log(user);
@@ -15,18 +27,33 @@ router.get('/', async function(req, res, next) {
 
 });
 
+//cart router to return the cart hbs file.
+router.get('/cart',verifyLogin,(req,res) => {
+
+  res.render('user/cart');
+})
+
 //login get router to destroy the session
 router.get('/logout',(req,res) => {
 
   req.session.destroy();
   res.redirect('/');
-  
+
 })
 
 //login get router to provide login hbs template.
 router.get('/login',(req,res) => {
 
-  res.render('user/login');
+  if(req.session.loggedIn)
+  {
+    res.redirect('/')
+  }
+  else
+  {
+    console.log(req.session.loginErr);
+    res.render('user/login',{"Error":req.session.loginErr});
+    req.session.loginErr = null;
+  }
 })
 
 //login post router to login.
@@ -34,14 +61,14 @@ router.post('/login',(req,res) => {
 
   userHelper.doLogin(req.body).then(response => {
 
-    req.session.loggedIn = true;
-    req.session.user = response.user;
-
     if(response.status)
     {
+      req.session.loggedIn = true;
+      req.session.user = response.user;
       res.redirect('/');
     }
     else{
+      req.session.loginErr = "Invalid Credentials";
       res.redirect('/login');
     }
   })
