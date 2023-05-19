@@ -21,9 +21,20 @@ router.get('/', async function(req, res, next){
   let user = req.session.user;
   console.log(user);
 
+  let cartCount = null;
+
+  if(req.session.user)
+  {
+    console.log("entered if home")
+    cartCount = await userHelper.getCartCount(req.session.user._id);
+    console.log(cartCount);
+  }
+
   let Products = await productHelper.getAllProducts();
 
-    res.render('user/view-products', { Products, user })
+  console.log("cartCount",cartCount);
+
+  res.render('user/view-products', { Products, user, cartCount })
 
 });
 
@@ -31,9 +42,10 @@ router.get('/', async function(req, res, next){
 router.get('/add-to-cart/:id',verifyLogin,(req,res) => {
 
   console.log(req.params.id);
+  console.log("api call");
 
   userHelper.addToCart(req.params.id,req.session.user._id).then(() => {
-    res.redirect('/')
+    //res.redirect('/')
   })
 })
 
