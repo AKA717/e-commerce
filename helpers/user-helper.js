@@ -33,28 +33,43 @@ module.exports = {
                     $match:{user:new ObjectId(userId)}
                 },
                 {
-                    $lookup:{
-                        from:'products',
-                        let:{productList:'$products'},
-                        pipeline:[
-                            {
-                                $match:{
-                                    $expr:{
-                                        $in:['$_id',"$$productList"]
-                                    }
-                                }
-                            }
-                        ],
-                        as:'cartItems'
+                    $unwind:'$products'
+                },
+                {
+                    $project:{
+                        item:'$products.item',
+                        quantity:'$products.quantity'
                     }
                 }
+                // {
+                //     $lookup:{
+                //         from:'products',
+                //         let:{productList:'$products'},
+                //         pipeline:[
+                //             {
+                //                 $match:{
+                //                     $expr:{
+                //                         $in:['$_id',"$$productList"]
+                //                     }
+                //                 }
+                //             }
+                //         ],
+                //         as:'cartItems'
+                //     }
+                // }
             ]).toArray()
 
+            console.log(cartItems);
             resolve(cartItems[0].cartItems);
         })
     },
 
     addToCart : (productId,userId) => {
+
+        const productObj = {
+            item:new ObjectId(productId),
+            quantity:1
+        };
 
         return new Promise(async (resolve,reject) => {
 
@@ -65,17 +80,42 @@ module.exports = {
 
             if(userCart)
             {
-                db.get().collection(collection.CART_COLLECTION).updateOne({user:new ObjectId(userId)},{
-                        $push:{products:new ObjectId(productId)}
-                }).then((response) => {
-                    resolve();
-                })
+                let isProductExist = userCart.products.findIndex(product => product.item.toString() === productId);
+                console.log(isProductExist);
+
+                if(isProductExist != -1)
+                {
+                    db.get().collection(collection.CART_COLLECTION)
+                    .updateOne(
+                        {
+                            'products.item':new ObjectId(productId)
+                        },
+                        {
+                            $inc:{'products.$.quantity': 1}
+                        }).then(response => {
+                            resolve();
+                        })
+                }
+                else
+                {
+                    db.get().collection(collection.CART_COLLECTION)
+                    .updateOne(
+                        {
+                            user:new ObjectId(userId)
+                        },
+                        {
+                            $push:{products:productObj}
+                        }
+                        ).then((response) => {
+                                resolve();
+                        })
+                    }
             }
             else
             {
                 let cartObj = {
                     user:new ObjectId(userId),
-                    products:[new ObjectId(productId)]
+                    products:[productObj]
                 }
 
                 db.get().collection(collection.CART_COLLECTION).insertOne(cartObj).then(response => {
