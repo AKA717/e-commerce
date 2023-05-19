@@ -43,7 +43,7 @@ router.get('/cart',verifyLogin,async (req,res) => {
   const cartItems = await userHelper.getCartProducts(req.session.user._id)
   console.log(cartItems);
 
-  res.render('user/cart',{cartItems});
+  res.render('user/cart',{cartItems,user:req.session.user});
 })
 
 //login get router to destroy the session
