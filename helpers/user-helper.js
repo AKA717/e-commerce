@@ -5,6 +5,27 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
 
+    changeProductQuantity : ({cart,product,count}) => {
+
+        console.log(cart,product,count);
+
+        return new Promise((resolve,reject) => {
+
+            db.get().collection(collection.CART_COLLECTION)
+                    .updateOne(
+                        {
+                            _id:new ObjectId(cart),
+                            'products.item':new ObjectId(product)
+                        },
+                        {
+                            $inc:{'products.$.quantity': parseInt(count)}
+                        }).then(response => {
+                            console.log("qauntity",response);
+                            resolve();
+                        })
+        })
+    },
+
     getCartCount : (userId) => {
 
         return new Promise(async (resolve,reject) => {
@@ -85,6 +106,7 @@ module.exports = {
                     db.get().collection(collection.CART_COLLECTION)
                     .updateOne(
                         {
+                            user: new ObjectId(userId),
                             'products.item':new ObjectId(productId)
                         },
                         {

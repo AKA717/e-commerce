@@ -38,6 +38,14 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to increment or decrement product quantity.
+router.post('/change-product-quantity',(req,res,next) => {
+
+  userHelper.changeProductQuantity(req.body).then(() => {
+    
+  })
+}) 
+
 //route to add the items to cart.
 router.get('/add-to-cart/:id',(req,res) => {
 
