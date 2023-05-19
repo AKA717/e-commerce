@@ -39,13 +39,13 @@ router.get('/', async function(req, res, next){
 });
 
 //route to add the items to cart.
-router.get('/add-to-cart/:id',verifyLogin,(req,res) => {
+router.get('/add-to-cart/:id',(req,res) => {
 
   console.log(req.params.id);
   console.log("api call");
 
   userHelper.addToCart(req.params.id,req.session.user._id).then(() => {
-    //res.redirect('/')
+  res.json({status:true});
   })
 })
 

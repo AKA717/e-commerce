@@ -4,7 +4,13 @@ function addToCart(productId){
         url:'/add-to-cart/'+productId,
         method:'get',
         success:(response) => {
-            alert(response);
+            
+            if(response.status)
+            {
+                let count = $('#cart-count').html();
+                count = parseInt(count) + 1
+                $('#cart-count').html(count)
+            }
         }
     })
 }
