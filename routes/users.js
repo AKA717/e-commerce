@@ -52,10 +52,10 @@ router.get('/add-to-cart/:id',(req,res) => {
 //cart router to return the cart hbs file.
 router.get('/cart',verifyLogin,async (req,res) => {
 
-  const cartItems = await userHelper.getCartProducts(req.session.user._id)
-  console.log(cartItems);
+  const products = await userHelper.getCartProducts(req.session.user._id)
+  console.log(products);
 
-  res.render('user/cart',{cartItems,user:req.session.user});
+  res.render('user/cart',{products,user:req.session.user});
 })
 
 //login get router to destroy the session

@@ -40,27 +40,19 @@ module.exports = {
                         item:'$products.item',
                         quantity:'$products.quantity'
                     }
+                },
+                {
+                    $lookup:{
+                        from:collection.PRODUCT_COLLECTION,
+                        localField:'item',
+                        foreignField:'_id',
+                        as:'product'
+                    }
                 }
-                // {
-                //     $lookup:{
-                //         from:'products',
-                //         let:{productList:'$products'},
-                //         pipeline:[
-                //             {
-                //                 $match:{
-                //                     $expr:{
-                //                         $in:['$_id',"$$productList"]
-                //                     }
-                //                 }
-                //             }
-                //         ],
-                //         as:'cartItems'
-                //     }
-                // }
             ]).toArray()
 
             console.log(cartItems);
-            resolve(cartItems[0].cartItems);
+            resolve(cartItems);
         })
     },
 
