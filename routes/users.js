@@ -19,15 +19,12 @@ const verifyLogin = (req,res,next) => {
 router.get('/', async function(req, res, next){
 
   let user = req.session.user;
-  console.log(user);
 
   let cartCount = null;
 
   if(req.session.user)
   {
-    console.log("entered if home")
     cartCount = await userHelper.getCartCount(req.session.user._id);
-    console.log(cartCount);
   }
 
   let Products = await productHelper.getAllProducts();
@@ -39,10 +36,17 @@ router.get('/', async function(req, res, next){
 });
 
 //route for checkout to place order.
-router.post('/checkout',(req,res) => {
+router.post('/checkout',async (req,res) => {
 
-  console.log(req.body);
-  
+  console.log(req.body)
+  let products = await userHelper.getCartProductList(req.body.userId);
+  let totAmt = await userHelper.getTotalAmount(req.body.userId);
+  userHelper.placeOrder(req.body,products,totAmt).then(response => {
+    console.log(response);
+    
+    res.json({status:true});
+  })
+
 })
 
 //route to return place order page.
@@ -50,7 +54,7 @@ router.get('/place-order',verifyLogin,async (req,res) => {
 
   let total = await userHelper.getTotalAmount(req.session.user._id)
 
-  res.render('user/place-order',{total});
+  res.render('user/place-order',{total,user:req.session.user});
 })
 
 //route to increment or decrement product quantity.

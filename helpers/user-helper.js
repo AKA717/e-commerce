@@ -5,6 +5,46 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
 
+    placeOrder : (order,products,totAmount) => {
+
+        return new Promise((resolve,reject) => {
+
+            console.log(order,products,totAmount);
+            let status = order.paymentMethod === 'COD'? 'pending': 'placed'
+
+            let orderObj = {
+                deliveryInfo : {
+                    mobile:order.mobile,
+                    address:order.address,
+                    pincode:order.pincode
+                },
+                userId:new ObjectId(order.userId),
+                paymentMethod: order.paymentMethod,
+                products:products,
+                status:status,
+                data:new Date(),
+                totalAmount:totAmount
+            }
+
+            db.get().collection(collection.ORDER_COLLECTION).insertOne(orderObj).then((response) =>{
+                console.log(response);
+                db.get().collection(collection.CART_COLLECTION).deleteOne({user:new ObjectId(order.userId)})
+                resolve()
+            })
+            
+        })
+    },
+
+    getCartProductList : (userId) => {
+
+        return new Promise(async (resolve,reject) => {
+
+            let cart = await db.get().collection(collection.CART_COLLECTION).findOne({user:new ObjectId(userId)})
+
+            resolve(cart.products);
+        })
+    },
+
     getTotalAmount : (userId) => {
 
         return new Promise(async (resolve,reject) => {
