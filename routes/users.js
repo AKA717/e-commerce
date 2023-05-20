@@ -38,6 +38,13 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route for checkout to place order.
+router.post('/checkout',(req,res) => {
+
+  console.log(req.body);
+  
+})
+
 //route to return place order page.
 router.get('/place-order',verifyLogin,async (req,res) => {
 
@@ -49,7 +56,13 @@ router.get('/place-order',verifyLogin,async (req,res) => {
 //route to increment or decrement product quantity.
 router.post('/change-product-quantity',(req,res,next) => {
 
-  userHelper.changeProductQuantity(req.body).then((response) => {
+  userHelper.changeProductQuantity(req.body).then(async (response) => {
+
+    console.log("inc/dec",req.body.user);
+
+    response.total = await userHelper.getTotalAmount(req.body.user);
+
+    console.log("response",response);
 
     res.json(response);
   })
@@ -69,10 +82,12 @@ router.get('/add-to-cart/:id',(req,res) => {
 //cart router to return the cart hbs file.
 router.get('/cart',verifyLogin,async (req,res) => {
 
-  const products = await userHelper.getCartProducts(req.session.user._id)
+  const products = await userHelper.getCartProducts(req.session.user._id);
+  const totalAmt = await userHelper.getTotalAmount(req.session.user._id);
   console.log(products);
+  console.log(req.session.user);
 
-  res.render('user/cart',{products,user:req.session.user});
+  res.render('user/cart',{products,user:req.session.user,totalAmt});
 })
 
 //login get router to destroy the session

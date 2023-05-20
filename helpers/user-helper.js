@@ -83,7 +83,7 @@ module.exports = {
                                     $inc:{'products.$.quantity': parseInt(count)}
                                 }).then(response => {
                                     console.log("qauntity",response);
-                                    resolve(true);
+                                    resolve({status:true});
                                 })
                 }
         })
