@@ -39,11 +39,11 @@ router.get('/', async function(req, res, next){
 });
 
 //route to return place order page.
-router.get('/place-order',async (req,res) => {
+router.get('/place-order',verifyLogin,async (req,res) => {
 
   let total = await userHelper.getTotalAmount(req.session.user._id)
 
-  res.render('user/place-order');
+  res.render('user/place-order',{total});
 })
 
 //route to increment or decrement product quantity.

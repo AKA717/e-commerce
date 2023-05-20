@@ -9,7 +9,7 @@ module.exports = {
 
         return new Promise(async (resolve,reject) => {
 
-            const cartItems = await db.get().collection(collection.CART_COLLECTION).aggregate([
+            const total = await db.get().collection(collection.CART_COLLECTION).aggregate([
 
                 {
                     $match:{user:new ObjectId(userId)}
@@ -35,13 +35,19 @@ module.exports = {
                     $project:{
                         item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
                     }
+                },
+                {
+                    $group:{
+                        _id:null,
+                        total:{$sum:{$multiply:['$quantity','$product.price']}}
+                    }
                 }
             ]).toArray()
 
-            console.log(cartItems);
-            resolve(cartItems);
+            console.log(total);
+            resolve(total[0].total);
         })
-        
+
     },
 
     changeProductQuantity : ({cart,product,count,quantity}) => {
