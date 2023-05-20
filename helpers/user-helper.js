@@ -5,24 +5,81 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
 
-    changeProductQuantity : ({cart,product,count}) => {
+    getTotalAmount : (userId) => {
 
-        console.log(cart,product,count);
+        return new Promise(async (resolve,reject) => {
+
+            const cartItems = await db.get().collection(collection.CART_COLLECTION).aggregate([
+
+                {
+                    $match:{user:new ObjectId(userId)}
+                },
+                {
+                    $unwind:'$products'
+                },
+                {
+                    $project:{
+                        item:'$products.item',
+                        quantity:'$products.quantity'
+                    }
+                },
+                {
+                    $lookup:{
+                        from:collection.PRODUCT_COLLECTION,
+                        localField:'item',
+                        foreignField:'_id',
+                        as:'product'
+                    }
+                },
+                {
+                    $project:{
+                        item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
+                    }
+                }
+            ]).toArray()
+
+            console.log(cartItems);
+            resolve(cartItems);
+        })
+        
+    },
+
+    changeProductQuantity : ({cart,product,count,quantity}) => {
+
+        console.log(cart,product,count,quantity);
 
         return new Promise((resolve,reject) => {
 
-            db.get().collection(collection.CART_COLLECTION)
-                    .updateOne(
-                        {
-                            _id:new ObjectId(cart),
-                            'products.item':new ObjectId(product)
-                        },
-                        {
-                            $inc:{'products.$.quantity': parseInt(count)}
-                        }).then(response => {
-                            console.log("qauntity",response);
-                            resolve();
-                        })
+            if(quantity == 1 && count == -1)
+            {
+                db.get().collection(collection.CART_COLLECTION)
+                .updateOne(
+                    {
+                        _id: new ObjectId(cart)
+                    },
+                    {
+                        $pull:{products:{item:new ObjectId(product)}}
+                    }
+                    ).then(response => {
+
+                        resolve({removeProduct : true})
+                    })
+            }
+            else
+            {
+                    db.get().collection(collection.CART_COLLECTION)
+                            .updateOne(
+                                {
+                                    _id:new ObjectId(cart),
+                                    'products.item':new ObjectId(product)
+                                },
+                                {
+                                    $inc:{'products.$.quantity': parseInt(count)}
+                                }).then(response => {
+                                    console.log("qauntity",response);
+                                    resolve(true);
+                                })
+                }
         })
     },
 

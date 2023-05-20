@@ -38,11 +38,20 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to return place order page.
+router.get('/place-order',async (req,res) => {
+
+  let total = await userHelper.getTotalAmount(req.session.user._id)
+
+  res.render('user/place-order');
+})
+
 //route to increment or decrement product quantity.
 router.post('/change-product-quantity',(req,res,next) => {
 
-  userHelper.changeProductQuantity(req.body).then(() => {
-    
+  userHelper.changeProductQuantity(req.body).then((response) => {
+
+    res.json(response);
   })
 }) 
 
