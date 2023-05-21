@@ -1,0 +1,19 @@
+  <section>
+        <div class="container mt-5">
+            <div class="row">
+                {{#each products}}
+                <div class="col-md-3" style="padding:1px">
+                    <div class="card" style="width: 17rem; height:26rem;">
+                        <img class="card-img-top" src="/product-images/{{product._id}}.jpg" alt="Card image cap" height="225px">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.title}}</h5>
+                            <p class="card-text">{{product.description}}</p>
+                            <p class="card-text">Rs: {{product.price}}/-</p>
+                            <p class="card-text">Qty : {{quantity}}</p>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            </div>
+    </section>

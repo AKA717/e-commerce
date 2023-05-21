@@ -35,10 +35,37 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to view the ordered products.
+router.get('/view-order-products/:id',async (req,res) => {
+
+  let products = await userHelper.getOrderProducts(req.params.id);
+  console.log("orderArray",products);
+  res.render('user/view-order-products',{user:req.session.user,products})
+})
+
+
+//route to return orders page.
+router.get('/orders',async (req,res) => {
+
+  console.log("order session ",req.session.user);
+
+  let orders = await userHelper.getUserOrders(req.session.user._id)
+  console.log(orders);
+
+  res.render('user/orders',{orders,user:req.session.user});
+
+})
+
+//route to return order success page.
+router.get('/order-success',(req,res) => {
+
+  res.render('user/order-success',{user:req.session.user});
+})
+
 //route for checkout to place order.
 router.post('/checkout',async (req,res) => {
 
-  console.log(req.body)
+  console.log("body",req.body)
   let products = await userHelper.getCartProductList(req.body.userId);
   let totAmt = await userHelper.getTotalAmount(req.body.userId);
   userHelper.placeOrder(req.body,products,totAmt).then(response => {

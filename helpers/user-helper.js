@@ -5,6 +5,51 @@ const ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
 
+    getOrderProducts : (orderId) => {
+
+        return new Promise(async (resolve,reject) => {
+
+            console.log("orderId",orderId);
+
+            let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                  $match: { _id: new ObjectId(orderId) } // Match by the _id field instead of the user field
+                },
+                {
+                  $unwind: '$products'
+                },
+                {
+                  $lookup: {
+                    from: collection.PRODUCT_COLLECTION,
+                    localField: 'products.item',
+                    foreignField: '_id',
+                    as: 'product'
+                  }
+                },
+                {
+                  $project: {
+                    _id: 0, // Exclude the _id field if not needed
+                    item: '$products.item',
+                    quantity: '$products.quantity',
+                    product: { $arrayElemAt: ['$product', 0] }
+                  }
+                }
+              ]).toArray();              
+
+            console.log("getOrderProducts",orderItems);
+            resolve(orderItems);
+        })
+    },
+
+    getUserOrders : (userId) => {
+
+        return new Promise(async (resolve,reject) => {
+            
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find({userId: new ObjectId(userId)}).toArray();
+            resolve(orders);
+        })
+    },
+
     placeOrder : (order,products,totAmount) => {
 
         return new Promise((resolve,reject) => {
@@ -22,7 +67,7 @@ module.exports = {
                 paymentMethod: order.paymentMethod,
                 products:products,
                 status:status,
-                data:new Date(),
+                date:new Date(),
                 totalAmount:totAmount
             }
 
