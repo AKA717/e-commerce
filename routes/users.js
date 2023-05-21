@@ -35,6 +35,13 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to verify razorpay payment.
+router.post('/verify-payment',(req,res) => {
+
+  console.log("verify",req.body);
+
+})
+
 //route to view the ordered products.
 router.get('/view-order-products/:id',async (req,res) => {
 
@@ -68,10 +75,21 @@ router.post('/checkout',async (req,res) => {
   console.log("body",req.body)
   let products = await userHelper.getCartProductList(req.body.userId);
   let totAmt = await userHelper.getTotalAmount(req.body.userId);
-  userHelper.placeOrder(req.body,products,totAmt).then(response => {
-    console.log(response);
+  userHelper.placeOrder(req.body,products,totAmt).then(orderId => {
+    console.log(orderId);
+
+    if(req.body.paymentMethod === 'COD')
+    {
+      res.json({codSuccess:true});
+    }
+    else
+    {
+      userHelper.generateRazorpay(orderId,totAmt).then(order => {
+
+        res.json(order);
+      })
+    }
     
-    res.json({status:true});
   })
 
 })
