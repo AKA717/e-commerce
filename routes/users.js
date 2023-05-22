@@ -40,6 +40,19 @@ router.post('/verify-payment',(req,res) => {
 
   console.log("verify",req.body);
 
+  userHelper.verifyPayment(req.body).then(() => {
+
+    userHelper.changePaymentStatus(req.body['order[receipt]']).then(() => {
+
+      res.json({status:true});
+
+    })
+
+  }).catch((err) => {
+
+      res.json({status:false});
+
+  })
 })
 
 //route to view the ordered products.
@@ -132,7 +145,13 @@ router.get('/add-to-cart/:id',(req,res) => {
 router.get('/cart',verifyLogin,async (req,res) => {
 
   const products = await userHelper.getCartProducts(req.session.user._id);
-  const totalAmt = await userHelper.getTotalAmount(req.session.user._id);
+
+  let totalAmt = 0;
+  if(products.length > 0)
+  {
+    totalAmt = await userHelper.getTotalAmount(req.session.user._id);
+  }
+
   console.log(products);
   console.log(req.session.user);
 
@@ -142,7 +161,7 @@ router.get('/cart',verifyLogin,async (req,res) => {
 //login get router to destroy the session
 router.get('/logout',(req,res) => {
 
-  req.session.destroy();
+  req.session.user = null;
   res.redirect('/');
 
 })
@@ -169,8 +188,9 @@ router.post('/login',(req,res) => {
 
     if(response.status)
     {
-      req.session.loggedIn = true;
       req.session.user = response.user;
+      req.sessionu.user.loggedIn = true;
+
       res.redirect('/');
     }
     else{
@@ -192,8 +212,8 @@ router.post('/signup',(req,res) => {
   userHelper.doSignUp(req.body).then((response) => {
     console.log(response);
 
-    req.session.loggedIn = true;
     req.session.user = response;
+    req.session.user.loggedIn = true;
 
     res.redirect('/');
   })

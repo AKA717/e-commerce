@@ -12,12 +12,59 @@ var instance = new Razorpay(
 
 module.exports = {
 
+    changePaymentStatus : (orderId) => {
+
+        return new Promise((resolve,reject) => {
+
+            db.get().collection(collection.ORDER_COLLECTION)
+            .updateOne(
+                {
+                    _id:new ObjectId(orderId)
+                },
+                {
+                    $set:{
+                        status:'placed'
+                    }
+                }
+                ).then(() => {
+
+                    resolve()
+                })
+        })
+    },
+
+    verifyPayment : (orderInfo) => {
+
+        return new Promise((resolve,reject) => {
+
+            const crypto = require('crypto');
+            let hmac = crypto.createHmac('sha256','rN8DWaRIuCbeCUIFzMHeuFaq')
+
+            console.log(orderInfo['payment[razorpay_order_id]'],orderInfo['payment[razorpay_payment_id]']);
+
+            hmac.update(orderInfo['payment[razorpay_order_id]']+'|'+orderInfo['payment[razorpay_payment_id]']);
+            hmac = hmac.digest('hex')
+
+            console.log("hmac : ",hmac);
+            console.log("order Sig : ",orderInfo['payment[razorpay_signature]']);
+
+            if(hmac === orderInfo['payment[razorpay_signature]'])
+            {
+                resolve();
+            }
+            else
+            {
+                reject();
+            }
+        })
+    },
+
     generateRazorpay : (orderId,totalAmt) => {
 
         return new Promise((resolve,reject) => {
 
             instance.orders.create({
-                amount: parseInt(totalAmt),
+                amount: parseInt(totalAmt)*100,
                 currency: "INR",
                 receipt: orderId,
               },
@@ -85,7 +132,7 @@ module.exports = {
         return new Promise((resolve,reject) => {
 
             console.log(order,products,totAmount);
-            let status = order.paymentMethod === 'COD'? 'pending': 'placed'
+            let status = order.paymentMethod === 'COD'? 'placed': 'pending'
 
             let orderObj = {
                 deliveryInfo : {
