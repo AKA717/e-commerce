@@ -26,6 +26,16 @@ router.get('/',verifyLogin, async function (req, res, next) {
     res.render('admin/view-products', { admin: true, Products })
 });
 
+//login get router the admin session
+router.get('/admin-logout',(req,res) => {
+
+    console.log("logout",req.session.admin)
+  
+    req.session.admin = null;
+    res.redirect('/');
+  
+  })
+
 //route for admin login.
 router.post('/admin-login',(req,res) => {
     console.log(req.body);
