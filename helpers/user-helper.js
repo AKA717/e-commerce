@@ -222,6 +222,8 @@ module.exports = {
 
     getTotalAmount : (userId) => {
 
+        console.log("total start",userId);
+
         return new Promise(async (resolve,reject) => {
 
             const total = await db.get().collection(collection.CART_COLLECTION).aggregate([
@@ -259,7 +261,7 @@ module.exports = {
                 }
             ]).toArray()
 
-            console.log(total);
+            console.log("total",total);
             resolve(total[0].total);
         })
 
