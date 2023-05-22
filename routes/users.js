@@ -37,6 +37,17 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to delete product from cart.
+router.post('/delete-cart-product',(req,res) => {
+
+  console.log(req.body);
+
+  userHelper.deleteCartProduct(req.body).then(() =>{
+
+    res.json({status:true})
+  })
+})
+
 //route to verify razorpay payment.
 router.post('/verify-payment',(req,res) => {
 

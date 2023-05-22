@@ -12,6 +12,25 @@ var instance = new Razorpay(
 
 module.exports = {
 
+    deleteCartProduct : (cartInfo) => {
+        console.log("delete helper",cartInfo);
+
+        return new Promise((resolve,reject) => {
+
+            db.get().collection(collection.CART_COLLECTION)
+            .updateOne(
+            {
+                _id:new ObjectId(cartInfo.cart_id)
+            },
+            { 
+                $pull: { 'products': { 'item': new ObjectId(cartInfo.product_id) } }
+            }
+            ).then(response => {
+                resolve();
+            })
+        })
+    },
+
     doAdminLogin : (adminData) => {
 
         return new Promise(async (resolve, reject) => {

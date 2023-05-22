@@ -29,7 +29,7 @@
 
               </div>
               <div class="col-md-1 col-lg-1 col-xl-1 text-end pl-1">
-                <a href="#!" class="btn btn-danger">Remove</a>
+                <button class="btn btn-danger" onclick="removeCartProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
               </div>
             </div>
           </div>
@@ -50,6 +50,27 @@
 </section>
 
 <script>
+
+  function removeCartProduct(cartId,productId) 
+  {
+    $.ajax(
+      {
+        url:'/delete-cart-product',
+        method:'post',
+        data:{
+          cart_id:cartId,
+          product_id:productId
+        },
+        success:(response) => {
+          if(response.status)
+          {
+            location.reload();
+          }
+        }
+      }
+    )
+  }
+
   function changeQuantity(cartId,productId,userId,count)
   {
 

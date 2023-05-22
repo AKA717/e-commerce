@@ -78,7 +78,7 @@ router.post('/edit-product/:id',(req,res) => {
 })
 
 //edit-product router to return edit-product hbs template.
-router.get('/edit-product/:id',async (req,res) => {
+router.get('/edit-product/:id',verifyLogin,async (req,res) => {
 
     console.log(req.params.id);
 
