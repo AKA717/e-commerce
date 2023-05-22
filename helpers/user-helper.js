@@ -12,6 +12,40 @@ var instance = new Razorpay(
 
 module.exports = {
 
+    doAdminLogin : (adminData) => {
+
+        return new Promise(async (resolve, reject) => {
+
+            let loginStatus = false;
+            let response = {};
+
+            const user = await db.get().collection(collection.ADMIN_COLLECTION).findOne({admin : adminData.admin});
+            
+            if(user)
+            {
+                bcrypt.compare(adminData.password,user.password).then(status => {
+
+                    if(status)
+                    {
+                        console.log("login success");
+                        response.user = user;
+                        response.status = true;
+                        resolve(response);
+                    }
+                    else{
+                        console.log("login failed");
+                        resolve({status:false});
+                    }
+                })
+            }
+            else
+            {
+                console.log("login failed");
+                resolve({status:false});
+            }
+        })
+    },
+
     changePaymentStatus : (orderId) => {
 
         return new Promise((resolve,reject) => {

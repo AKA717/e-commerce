@@ -179,7 +179,7 @@ router.get('/login',(req,res) => {
   }
   else
   {
-    console.log(req.session.loginErr);
+    console.log(req.session.userLoginErr);
     res.render('user/login',{"Error":req.session.userLoginErr});
     req.session.userLoginErr = null;
   }
