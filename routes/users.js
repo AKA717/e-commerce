@@ -5,7 +5,9 @@ var userHelper = require('../helpers/user-helper');
 
 const verifyLogin = (req,res,next) => {
 
-  if(req.session.loggedIn)
+  console.log("verifylogin : ",req.session.user)
+
+  if(req.session.user)
   {
     next();
   }
@@ -161,6 +163,8 @@ router.get('/cart',verifyLogin,async (req,res) => {
 //login get router to destroy the session
 router.get('/logout',(req,res) => {
 
+  console.log("logout",req.session.user)
+
   req.session.user = null;
   res.redirect('/');
 
@@ -169,15 +173,15 @@ router.get('/logout',(req,res) => {
 //login get router to provide login hbs template.
 router.get('/login',(req,res) => {
 
-  if(req.session.loggedIn)
+  if(req.session.user)
   {
     res.redirect('/')
   }
   else
   {
     console.log(req.session.loginErr);
-    res.render('user/login',{"Error":req.session.loginErr});
-    req.session.loginErr = null;
+    res.render('user/login',{"Error":req.session.userLoginErr});
+    req.session.userLoginErr = null;
   }
 })
 
@@ -189,12 +193,12 @@ router.post('/login',(req,res) => {
     if(response.status)
     {
       req.session.user = response.user;
-      req.sessionu.user.loggedIn = true;
-
+      req.session.user.loggedIn = true;
+      console.log("login : ",req.session.user)
       res.redirect('/');
     }
     else{
-      req.session.loginErr = "Invalid Credentials";
+      req.session.userLoginErr = "Invalid Credentials";
       res.redirect('/login');
     }
   })
