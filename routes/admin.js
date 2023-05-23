@@ -26,6 +26,17 @@ router.get('/',verifyLogin, async function (req, res, next) {
     res.render('admin/view-products', { admin: true, Products,user:req.session.admin })
 });
 
+//route to delete an user.
+router.post('/delete-user',(req,res) => {
+
+    console.log(req.body);
+
+    userHelper.deleteUser(req.body.user_id).then(response => {
+
+        res.json({status:true})
+    })
+})
+
 //route to get all users.
 router.get('/all-users',verifyLogin,async (req,res) => {
 
@@ -35,7 +46,7 @@ router.get('/all-users',verifyLogin,async (req,res) => {
 
     if(users)
     {
-        res.render('admin/all-users',{admin:true,users})
+        res.render('admin/all-users',{admin:true,users,user:req.session.admin})
     }
     else{
         res.redirect('/admin');
@@ -57,7 +68,7 @@ router.get('/all-orders',verifyLogin,async (req,res) => {
 
     console.log("admin all orders",orders)
 
-    res.render('admin/all-orders',{orders,admin:req.session.admin});
+    res.render('admin/all-orders',{orders,user:req.session.admin,admin:true});
 })
 
 //login get router the admin session

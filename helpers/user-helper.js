@@ -12,6 +12,19 @@ var instance = new Razorpay(
 
 module.exports = {
 
+    deleteUser : (userId) => {
+
+        return new Promise((resolve,reject) => {
+
+            db.get().collection(collection.USERS_COLLECTION).deleteOne({_id: new ObjectId(userId)})
+            .then(response => {
+
+                console.log("delete users response",response)
+                resolve()
+            })
+        })
+    },
+
     getAllUsers : () => {
 
         return new Promise(async (resolve,reject) => {

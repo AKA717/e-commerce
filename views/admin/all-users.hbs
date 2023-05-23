@@ -19,8 +19,8 @@
                     <td>{{lastname}}</td>
                     <td>{{email}}</td>
                     <td>
-                        {{!-- <a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">Edit</a> --}}
-                        <a href="/admin/delete-user/{{this._id}}" class="btn btn-danger" onclick=" return confirm('Are you sure about deleting {{firstname}} ?')">Delete</a>
+                        <a href="/admin/edit-product/{{this._id}}" class="btn btn-primary">Edit</a>
+                        <button class="btn btn-danger" onclick="confirm('Are you sure ?') && removeUser('{{this._id}}')">Delete</button>
                     </td>
                 </tr>
                 {{/each}}
@@ -33,4 +33,27 @@
     $(document).ready( function () {
     $('#usersTable').DataTable();
 } );
+
+function removeUser(userId) 
+  {
+    console.log("remove user called");
+    $.ajax(
+      {
+        url:'/admin/delete-user',
+        method:'post',
+        data:{
+            user_id:userId
+        },
+        success:(response) => {
+          if(response.status)
+          {
+            location.reload();
+          }
+          else{
+            alert('deletion failed');
+          }
+        }
+      }
+    )
+  }
 </script>
