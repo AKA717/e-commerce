@@ -26,6 +26,32 @@ router.get('/',verifyLogin, async function (req, res, next) {
     res.render('admin/view-products', { admin: true, Products,user:req.session.admin })
 });
 
+//route to get all users.
+router.get('/all-users',async (req,res) => {
+
+    let users = await userHelper.getAllUsers();
+
+    console.log("all users" ,users)
+})
+
+//route to view the ordered products.
+router.get('/view-order-products/:id',verifyLogin,async (req,res) => {
+
+    let products = await userHelper.getOrderProducts(req.params.id);
+    console.log("orderArray",products);
+    res.render('admin/view-order-products',{admin:true,user:req.session.admin,products})
+})
+
+//route to get all orders.
+router.get('/all-orders',verifyLogin,async (req,res) => {
+
+    let orders = await userHelper.getAllOrders()
+
+    console.log("admin all orders",orders)
+
+    res.render('admin/all-orders',{orders,admin:req.session.admin});
+})
+
 //login get router the admin session
 router.get('/admin-logout',(req,res) => {
 

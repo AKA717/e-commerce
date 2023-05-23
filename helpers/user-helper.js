@@ -12,6 +12,26 @@ var instance = new Razorpay(
 
 module.exports = {
 
+    getAllUsers : () => {
+
+        return new Promise(async (resolve,reject) => {
+
+            let users = await db.get().collection(collection.USERS_COLLECTION).find();
+
+            resolve(users);
+        })
+    },
+
+    getAllOrders : () => {
+
+        return new Promise(async (resolve,reject) => {
+            
+            let orders = await db.get().collection(collection.ORDER_COLLECTION).find().toArray();
+
+            resolve(orders);
+        })
+    },
+
     deleteCartProduct : (cartInfo) => {
         console.log("delete helper",cartInfo);
 
