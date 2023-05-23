@@ -17,7 +17,9 @@
                         <a class="nav-link" href="#">All Users</a>
                     </li>
                 </ul>
-                <a class="btn btn-danger" href="/admin/admin-logout">log out</a>
+                {{#if user}}
+                    <a class="btn btn-danger" href="/admin/admin-logout">log out</a>
+                {{/if}}
             </div>
         </nav>
     </header>

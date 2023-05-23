@@ -23,7 +23,7 @@ router.get('/',verifyLogin, async function (req, res, next) {
     let Products = await productHelper.getAllProducts();
     console.log("admin data",Products[0]._id);
 
-    res.render('admin/view-products', { admin: true, Products })
+    res.render('admin/view-products', { admin: true, Products,user:req.session.admin })
 });
 
 //login get router the admin session

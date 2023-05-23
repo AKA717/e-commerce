@@ -16,7 +16,7 @@ module.exports = {
           title:productDetails.title,
           category:productDetails.category,
           description:productDetails.description,
-          price:productDetails.price
+          price:parseInt(productDetails.price)
         }
       }).then( response => {
         console.log(response)
