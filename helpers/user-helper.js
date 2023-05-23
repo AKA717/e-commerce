@@ -16,7 +16,7 @@ module.exports = {
 
         return new Promise(async (resolve,reject) => {
 
-            let users = await db.get().collection(collection.USERS_COLLECTION).find();
+            let users = await db.get().collection(collection.USERS_COLLECTION).find().toArray();
 
             resolve(users);
         })

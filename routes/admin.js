@@ -27,11 +27,19 @@ router.get('/',verifyLogin, async function (req, res, next) {
 });
 
 //route to get all users.
-router.get('/all-users',async (req,res) => {
+router.get('/all-users',verifyLogin,async (req,res) => {
 
     let users = await userHelper.getAllUsers();
 
     console.log("all users" ,users)
+
+    if(users)
+    {
+        res.render('admin/all-users',{admin:true,users})
+    }
+    else{
+        res.redirect('/admin');
+    }
 })
 
 //route to view the ordered products.
