@@ -19,8 +19,14 @@ module.exports = {
             db.get().collection(collection.USERS_COLLECTION).deleteOne({_id: new ObjectId(userId)})
             .then(response => {
 
-                console.log("delete users response",response)
-                resolve()
+                db.get().collection(collection.ORDER_COLLECTION).deleteOne({userId: new ObjectId(userId)}).then(response => {
+                    
+                    db.get().collection(collection.CART_COLLECTION).deleteOne({user:new ObjectId(userId)}).then(reponse => {
+
+                        resolve();
+                    })
+                })
+                
             })
         })
     },
