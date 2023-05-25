@@ -6,6 +6,7 @@
         <table class="table mt-3">
             <thead>
                 <tr>
+                    <th scope="col">Name</th>
                     <th scope="col">Date</th>
                     <th scope="col">Address</th>
                     <th scope="col">Pincode</th>
@@ -18,6 +19,7 @@
             <tbody>
                 {{#each orders}}
                 <tr>
+                    <td>{{deliveryInfo.firstname}}</td>
                     <td>{{date}}</td>
                     <td>{{deliveryInfo.address}}</td>
                     <td>{{deliveryInfo.pincode}}</td>

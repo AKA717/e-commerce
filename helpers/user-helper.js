@@ -222,6 +222,8 @@ module.exports = {
 
             let orderObj = {
                 deliveryInfo : {
+                    firstname:order.firstname,
+                    lastname:order.lastname,
                     mobile:order.mobile,
                     address:order.address,
                     pincode:order.pincode
