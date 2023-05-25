@@ -49,9 +49,9 @@ module.exports = {
 
   addProduct : (product,callback) => {
 
-    db.Insert(collection.PRODUCT_COLLECTION,product).then((result) => {
+    product.price = parseInt(product.price);
 
-      console.log(result);
+    db.Insert(collection.PRODUCT_COLLECTION,product).then((result) => {
 
       callback(result.insertedId.toString());
 
