@@ -66,7 +66,12 @@ router.get('/all-orders',verifyLogin,async (req,res) => {
 
     let orders = await userHelper.getAllOrders()
 
-    console.log("admin all orders",orders)
+    orders = orders.map(order => {
+        let date = order.date.toDateString() + " , " + order.date.toLocaleTimeString()
+
+        order.date = date
+        return order;
+    })
 
     res.render('admin/all-orders',{orders,user:req.session.admin,admin:true});
 })

@@ -83,7 +83,13 @@ router.get('/orders',async (req,res) => {
   console.log("order session ",req.session.user);
 
   let orders = await userHelper.getUserOrders(req.session.user._id)
-  console.log(orders);
+
+  orders = orders.map(order => {
+    let date = order.date.toDateString() + " , " + order.date.toLocaleTimeString()
+
+    order.date = date
+    return order;
+  })
 
   res.render('user/orders',{orders,user:req.session.user});
 
