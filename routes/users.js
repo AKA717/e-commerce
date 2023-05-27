@@ -78,7 +78,7 @@ router.get('/view-order-products/:id',async (req,res) => {
 
 
 //route to return orders page.
-router.get('/orders',async (req,res) => {
+router.get('/orders',verifyLogin,async (req,res) => {
 
   console.log("order session ",req.session.user);
 
