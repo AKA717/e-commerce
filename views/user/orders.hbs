@@ -1,44 +1,25 @@
-<head>
-    <link href="../../public/stylesheets/orders.css" rel="stylesheet"/>
-</head>
-<section>
-    <div class="container" style="margin-top: 5rem;">
-        <div class="w-100 mt-5">
-            <h3 class="text-center">Orders</h3>
+<section class="mt-5" style="background-color:white;">
+    <div class="text-center container py-5">
+
+        {{#each orders}}
+        <div class="col-lg-12 col-md-12 mb-4">
+            <div class="card cards">
+                <div class="card-body d-flex justify-content-around">
+                    <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                        data-mdb-ripple-color="light">
+                        <img src="/product-images/{{product._id}}.jpg" class="w-100" />
+                    </div>
+                    <h5 class="card-title mb-3">{{deliveryInfo.firstname}}</h5>
+                    <p class="text-truncate">{{date}}</p>
+                    <h6 class="mb-3">{{deliveryInfo.address}}</h6>
+                    <p class="card-text">{{deliveryInfo.pincode}}</p>
+                    <p class="card-text">{{deliveryInfo.mobile}}</p>
+                    <p class="card-text">Rs.{{totalAmount}}/-</p>
+                    <p class="card-text">{{paymentMethod}}</p>
+                    <p class="card-text">{{status}}</p>
+                </div>
+            </div>
         </div>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Pincode</th>
-                    <th scope="col">Mobile</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Payment Method</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each orders}}
-                <tr>
-                    <td>{{deliveryInfo.firstname}}</td>
-                    <td>{{date}}</td>
-                    <td>{{deliveryInfo.address}}</td>
-                    <td>{{deliveryInfo.pincode}}</td>
-                    <td>{{deliveryInfo.mobile}}</td>
-                    <td>{{totalAmount}}</td>
-                    <td>{{paymentMethod}}</td>
-                    <td>{{status}}</td>
-                    <td>
-                        <a href="/view-order-products/{{this._id}}" class="btn btn-primary">View Products</a>
-                    </td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
-        
+        {{/each}}
     </div>
 </section>
-
-   
