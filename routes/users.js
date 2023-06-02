@@ -21,6 +21,7 @@ const verifyLogin = (req,res,next) => {
 router.get('/', async function(req, res, next){
 
   let user = req.session.user;
+  //let userCookie = req.cookies.username;
 
   let cartCount = null;
 
@@ -182,6 +183,8 @@ router.get('/logout',(req,res) => {
 
   console.log("logout",req.session.user)
 
+  res.clearCookie("username");
+
   req.session.user = null;
   res.redirect('/');
 
@@ -212,6 +215,7 @@ router.post('/login',(req,res) => {
       req.session.user = response.user;
       req.session.user.loggedIn = true;
       console.log("login : ",req.session.user)
+      res.cookie("username",req.session.user.email);
       res.redirect('/');
     }
     else{

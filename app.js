@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var helmet = require('helmet');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -22,6 +23,9 @@ db.connection((err) => {
 });
 
 var app = express();
+
+// allow the app to use cookieparser
+app.use(helmet());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
