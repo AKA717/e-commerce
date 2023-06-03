@@ -1,6 +1,7 @@
 <section class="mt-5" style="background-color:white;">
     <div class="text-center container py-5">
 
+        {{#if Products}}
         <div class="row">
         {{#each Products}}
             <div class="col-lg-4 col-md-12 mb-4">
@@ -20,6 +21,11 @@
             </div>
         {{/each}}
         </div>
+         {{else}}
+        <div class="spinner-border text-dark" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        {{/if}}
     </div>
 </section>
 
