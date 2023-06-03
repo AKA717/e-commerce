@@ -24,8 +24,9 @@ db.connection((err) => {
 
 var app = express();
 
+
 // allow the app to use cookieparser
-app.use(helmet());
+//app.use(helmet());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

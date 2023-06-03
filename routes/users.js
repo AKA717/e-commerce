@@ -183,7 +183,7 @@ router.get('/logout',(req,res) => {
 
   console.log("logout",req.session.user)
 
-  res.clearCookie("username");
+  //res.clearCookie("usercookie");
 
   req.session.user = null;
   res.redirect('/');
@@ -215,7 +215,12 @@ router.post('/login',(req,res) => {
       req.session.user = response.user;
       req.session.user.loggedIn = true;
       console.log("login : ",req.session.user)
-      res.cookie("username",req.session.user.email);
+      // res.cookie("usercookie",`req.user`,
+      // {
+      //   maxAge: 1209600000,
+      //   httpOnly:true,
+      //   sameSite:'strict'
+      // });
       res.redirect('/');
     }
     else{
