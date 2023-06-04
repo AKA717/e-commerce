@@ -1,0 +1,26 @@
+<section style="margin-top: 6rem;">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="text-center mb-4">Edit Profile</h1>
+                <form action="/edit-profile/{{user._id}}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Title" name="title" value="{{user.firstname}}">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control"  placeholder="Category" name="category" value="{{user.lastname}}">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control"  placeholder="Description" name="description" value="{{user.email}}">
+                    </div>
+                    {{!-- <div class="form-group">
+                        <label>Image</label>
+                        <img id="imgView" src="/product-images/{{product._id}}.jpg" alt="p5roduct image" style="width:100px;height:100px" />
+                        <input type="file" class="form-control"  placeholder="Image" name="image" onchange="viewImage(event)">
+                    </div> --}}
+                    <button type="submit" class="btn btn-success mt-3">submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

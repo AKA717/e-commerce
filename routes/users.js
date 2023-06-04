@@ -38,6 +38,18 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to get edit profile
+router.get('/edit-profile',verifyLogin,(req,res) => {
+
+  userHelper.getUser(req.session.user._id).then(user => {
+
+    console.log("user-profile",user);
+
+    if(user)
+      res.render('user/edit-profile',{user});
+  })
+});
+
 //route to delete product from cart.
 router.post('/delete-cart-product',(req,res) => {
 
