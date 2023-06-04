@@ -38,6 +38,20 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to change the profile.
+router.post('/edit-profile/:id',(req,res) => {
+  
+  userHelper.updateUser(req.params.id,req.body).then((respone) => {
+
+    console.log(respone);
+    if(respone)
+    {
+      res.redirect('/');
+    }
+  })
+  
+})
+
 //route to get edit profile
 router.get('/edit-profile',verifyLogin,(req,res) => {
 
