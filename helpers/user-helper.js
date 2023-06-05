@@ -12,6 +12,19 @@ var instance = new Razorpay(
 
 module.exports = {
 
+    getProduct : (productId) => {
+
+       return new Promise((resolve,reject) => {
+
+        db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:new ObjectId(productId)}).then(product => {
+        
+            resolve(product);
+            
+        })
+       })
+
+    },
+
     updateUser : (userId,info) => {
 
         return new Promise((resolve,reject) => {

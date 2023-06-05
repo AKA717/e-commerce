@@ -6,19 +6,19 @@
         {{#each Products}}
             <div class="col-lg-4 col-md-12 mb-4">
                 <div class="card cards">
-                    <a href="/product-view">
+                    <a href="/product-view/{{this._id}}">
                     <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
                         data-mdb-ripple-color="light">
                         <img src="/product-images/{{this._id}}.jpg"
                             class="w-100" />
                     </div>
+                    </a>
                     <div class="card-body">
                         <h5 class="card-title mb-3">{{title}}</h5>
                             <p class="text-truncate">{{description}}</p>
                         <h6 class="mb-3">Rs.{{price}}/-</h6>
                         <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add to Cart</button>
                     </div>
-                    </a>
                 </div>
             </div>
         {{/each}}

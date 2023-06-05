@@ -38,6 +38,18 @@ router.get('/', async function(req, res, next){
 
 });
 
+//route to view product page.
+router.get('/product-view/:id',(req,res) => {
+
+  userHelper.getProduct(req.params.id).then(product => {
+
+    console.log(product._id);
+
+    res.render('user/product-view',{product});
+
+  })
+})
+
 //route to change the profile.
 router.post('/edit-profile/:id',(req,res) => {
   
