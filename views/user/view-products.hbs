@@ -6,6 +6,7 @@
         {{#each Products}}
             <div class="col-lg-4 col-md-12 mb-4">
                 <div class="card cards">
+                    <a href="/product-view">
                     <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
                         data-mdb-ripple-color="light">
                         <img src="/product-images/{{this._id}}.jpg"
@@ -17,6 +18,7 @@
                         <h6 class="mb-3">Rs.{{price}}/-</h6>
                         <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add to Cart</button>
                     </div>
+                    </a>
                 </div>
             </div>
         {{/each}}
@@ -39,4 +41,13 @@
         box-shadow: 5px 6px 6px 2px #e9ecef;
         transform: scale(1.1);
     }
+
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    a:link, a:visited, a:hover, a:active{
+    text-decoration: none;
+    color: black;
+}
 </style>
