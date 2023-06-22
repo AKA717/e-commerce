@@ -3,7 +3,6 @@ const collection = require('../config/collection');
 const { response } = require('../app');
 const ObjectId = require('mongodb').ObjectId;
 
-
 module.exports = {
 
   updateProduct : (productId,productDetails) => {
@@ -51,7 +50,7 @@ module.exports = {
 
     product.price = parseInt(product.price);
 
-    db.Insert(collection.PRODUCT_COLLECTION,product).then((result) => {
+    db.get().collection(collection.PRODUCT_COLLECTION).insetOne(product).then((result) => {
 
       callback(result.insertedId.toString());
 
@@ -61,7 +60,13 @@ module.exports = {
   },
 
   getAllProducts : async () => {
-    let products = await db.GetAll();
-    return products;
+
+    return new Promise( async (resolve,reject) => {
+
+      let products = await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray();
+
+      resolve(products);
+  
+    })
   }
 };

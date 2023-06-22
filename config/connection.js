@@ -40,18 +40,6 @@ async function Insert(collectionName,document)
   }
 }
 
-//Get all products from database.
-const GetAll = () => {
-
-  return new Promise( async (resolve,reject) => {
-
-    const db = get();
-    let products = await db.collection(collection.PRODUCT_COLLECTION).find().toArray();
-    resolve(products);
-
-  })
-}
-
 //returns the database object.
 function get() {
   if (!state.db) {
@@ -63,6 +51,5 @@ function get() {
 module.exports = {
   connection,
   get,
-  Insert,
-  GetAll
+  Insert
 }
