@@ -18,7 +18,6 @@ module.exports = {
           price:parseInt(productDetails.price)
         }
       }).then( response => {
-        console.log(response)
         resolve();
       })
     })
@@ -39,7 +38,6 @@ module.exports = {
 
       db.get().collection(collection.PRODUCT_COLLECTION).deleteOne({_id:new ObjectId(productId)}).then(response => {
 
-        console.log(response);
         resolve(response);
       })
 

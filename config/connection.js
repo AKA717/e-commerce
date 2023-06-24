@@ -22,24 +22,6 @@ async function connection(callback) {
     }
   };
 
-//inserting the data to the function 
-async function Insert(collectionName,document)
-{
-  try
-  {
-    const db = get();
-    const collection = db.collection(collectionName);
-    const result = await collection.insertOne(document);
-    console.log(result);
-    return result;
-  }
-  catch(err)
-  {
-    console.log("Error at inserting document : ",err);
-    throw err;
-  }
-}
-
 //returns the database object.
 function get() {
   if (!state.db) {
@@ -50,6 +32,5 @@ function get() {
 
 module.exports = {
   connection,
-  get,
-  Insert
+  get
 }

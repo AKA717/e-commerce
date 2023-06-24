@@ -7,7 +7,6 @@
                 <div class="form-outline">
                     <input type="input" id="search" class="form-control" />
                 </div>
-                <button type="button" class="btn btn-primary search-btn" onchange="Search(e)">search</button>
             </div>
         {{#each Products}}
             <div class="col-lg-4 col-md-12 mb-4">
@@ -36,13 +35,6 @@
         {{/if}}
     </div>
 </section>
-
-<script>
-    const Search = document.getElementById('search')
-   Search.addEventListener('input', function(e) {  
-    console.log(e.target.value)
-})  
-</script>
 
 <style>
     .search-btn{

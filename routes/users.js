@@ -32,8 +32,6 @@ router.get('/', async function(req, res, next){
 
   let Products = await productHelper.getAllProducts();
 
-  console.log("cartCount",cartCount);
-
   res.render('user/view-products', { Products, user, cartCount })
 
 });
@@ -42,8 +40,6 @@ router.get('/', async function(req, res, next){
 router.get('/product-view/:id',(req,res) => {
 
   userHelper.getProduct(req.params.id).then(product => {
-
-    console.log(product._id);
 
     res.render('user/product-view',{product});
 
@@ -55,7 +51,6 @@ router.post('/edit-profile/:id',(req,res) => {
   
   userHelper.updateUser(req.params.id,req.body).then((respone) => {
 
-    console.log(respone);
     if(respone)
     {
       res.redirect('/');
@@ -69,8 +64,6 @@ router.get('/edit-profile',verifyLogin,(req,res) => {
 
   userHelper.getUser(req.session.user._id).then(user => {
 
-    console.log("user-profile",user);
-
     if(user)
       res.render('user/edit-profile',{user});
   })
@@ -78,8 +71,6 @@ router.get('/edit-profile',verifyLogin,(req,res) => {
 
 //route to delete product from cart.
 router.post('/delete-cart-product',(req,res) => {
-
-  console.log(req.body);
 
   userHelper.deleteCartProduct(req.body).then(() =>{
 
@@ -89,8 +80,6 @@ router.post('/delete-cart-product',(req,res) => {
 
 //route to verify razorpay payment.
 router.post('/verify-payment',(req,res) => {
-
-  console.log("verify",req.body);
 
   userHelper.verifyPayment(req.body).then(() => {
 
@@ -119,8 +108,6 @@ router.get('/view-order-products/:id',async (req,res) => {
 //route to return orders page.
 router.get('/orders',verifyLogin,async (req,res) => {
 
-  console.log("order session ",req.session.user);
-
   let orders = await userHelper.getUserOrders(req.session.user._id)
 
   orders = orders.map(order => {
@@ -143,11 +130,9 @@ router.get('/order-success',(req,res) => {
 //route for checkout to place order.
 router.post('/checkout',async (req,res) => {
 
-  console.log("body",req.body)
   let products = await userHelper.getCartProductList(req.body.userId);
   let totAmt = await userHelper.getTotalAmount(req.body.userId);
   userHelper.placeOrder(req.body,products,totAmt).then(orderId => {
-    console.log(orderId);
 
     if(req.body.paymentMethod === 'COD')
     {
@@ -178,11 +163,7 @@ router.post('/change-product-quantity',(req,res,next) => {
 
   userHelper.changeProductQuantity(req.body).then(async (response) => {
 
-    console.log("inc/dec",req.body.user);
-
     response.total = await userHelper.getTotalAmount(req.body.user);
-
-    console.log("response",response);
 
     res.json(response);
   })
@@ -190,9 +171,6 @@ router.post('/change-product-quantity',(req,res,next) => {
 
 //route to add the items to cart.
 router.get('/add-to-cart/:id',(req,res) => {
-
-  console.log(req.params.id);
-  console.log("api call");
 
   userHelper.addToCart(req.params.id,req.session.user._id).then(() => {
   res.json({status:true});
@@ -210,16 +188,12 @@ router.get('/cart',verifyLogin,async (req,res) => {
     totalAmt = await userHelper.getTotalAmount(req.session.user._id);
   }
 
-  console.log(products);
-  console.log(req.session.user);
-
   res.render('user/cart',{products,user:req.session.user,totalAmt});
 })
 
 //login get router to destroy the session
 router.get('/logout',(req,res) => {
 
-  console.log("logout",req.session.user)
 
   //res.clearCookie("usercookie");
 
@@ -237,7 +211,6 @@ router.get('/login',(req,res) => {
   }
   else
   {
-    console.log(req.session.userLoginErr);
     res.render('user/login',{"Error":req.session.userLoginErr});
     req.session.userLoginErr = null;
   }
@@ -252,7 +225,6 @@ router.post('/login',(req,res) => {
     {
       req.session.user = response.user;
       req.session.user.loggedIn = true;
-      console.log("login : ",req.session.user)
       // res.cookie("usercookie",`req.user`,
       // {
       //   maxAge: 1209600000,
@@ -278,7 +250,6 @@ router.get('/signup',(req,res) => {
 router.post('/signup',(req,res) => {
 
   userHelper.doSignUp(req.body).then((response) => {
-    console.log(response);
 
     req.session.user = response;
     req.session.user.loggedIn = true;

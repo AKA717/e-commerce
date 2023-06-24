@@ -92,7 +92,6 @@
 
     function razorpayPayment(order)
     {
-      console.log("razor ajax",order.amount);
       var options = {
         "key": "rzp_test_j1CanzsbNKEoGw", // Enter the Key ID generated from the Dashboard
         "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -103,7 +102,6 @@
         "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         "handler": function (response) {
 
-          console.log("handler",response,order)
           verifyPayment(response,order);
         },
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number

@@ -4,8 +4,6 @@ var productHelper = require('../helpers/product-helper');
 const userHelper = require('../helpers/user-helper');
 
 const verifyLogin = (req,res,next) => {
-
-    console.log("verifylogin : ",req.session.admin)
   
     if(req.session.admin)
     {
@@ -21,15 +19,12 @@ const verifyLogin = (req,res,next) => {
 router.get('/',verifyLogin, async function (req, res, next) {
 
     let Products = await productHelper.getAllProducts();
-    console.log("admin data",Products[0]._id);
 
     res.render('admin/view-products', { admin: true, Products,user:req.session.admin })
 });
 
 //route to delete an user.
 router.post('/delete-user',(req,res) => {
-
-    console.log(req.body);
 
     userHelper.deleteUser(req.body.user_id).then(response => {
 
@@ -41,8 +36,6 @@ router.post('/delete-user',(req,res) => {
 router.get('/all-users',verifyLogin,async (req,res) => {
 
     let users = await userHelper.getAllUsers();
-
-    console.log("all users" ,users)
 
     if(users)
     {
@@ -57,7 +50,6 @@ router.get('/all-users',verifyLogin,async (req,res) => {
 router.get('/view-order-products/:id',verifyLogin,async (req,res) => {
 
     let products = await userHelper.getOrderProducts(req.params.id);
-    console.log("orderArray",products);
     res.render('admin/view-order-products',{admin:true,user:req.session.admin,products})
 })
 
@@ -78,8 +70,6 @@ router.get('/all-orders',verifyLogin,async (req,res) => {
 
 //login get router the admin session
 router.get('/admin-logout',(req,res) => {
-
-    console.log("logout",req.session.admin)
   
     req.session.admin = null;
     res.redirect('/');
@@ -88,14 +78,13 @@ router.get('/admin-logout',(req,res) => {
 
 //route for admin login.
 router.post('/admin-login',(req,res) => {
-    console.log(req.body);
+
     userHelper.doAdminLogin(req.body).then(response => {
 
         if(response.status)
         {
           req.session.admin = response.user;
           req.session.admin.loggedIn = true;
-          console.log("admin-login : ",req.session.admin)
           res.redirect('/admin');
         }
         else{
@@ -114,7 +103,6 @@ router.get('/admin-login',(req,res) => {
 //edit-product route to edit the item details.
 router.post('/edit-product/:id',(req,res) => {
 
-    console.log(req.params.id)
     productHelper.updateProduct(req.params.id,req.body).then(() => {
 
         if(req.files.image)
@@ -130,19 +118,13 @@ router.post('/edit-product/:id',(req,res) => {
 //edit-product router to return edit-product hbs template.
 router.get('/edit-product/:id',verifyLogin,async (req,res) => {
 
-    console.log(req.params.id);
-
     const product = await productHelper.getProductInfo(req.params.id);
-
-    console.log(product);
 
     res.render('admin/edit-product',{product});
 })
 
 //delete route to remove an item.
 router.get('/delete-product/:id',(req,res) => {
-
-    console.log(req.params.id);
 
     productHelper.deleteProduct(req.params.id).then(response => {
 
