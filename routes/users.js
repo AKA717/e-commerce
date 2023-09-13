@@ -5,8 +5,6 @@ var userHelper = require('../helpers/user-helper');
 
 const verifyLogin = (req,res,next) => {
 
-  console.log("verifylogin : ",req.session.user)
-
   if(req.session.user)
   {
     next();
@@ -114,8 +112,11 @@ router.get('/orders',verifyLogin,async (req,res) => {
     let date = order.date.toDateString() + " , " + order.date.toLocaleTimeString()
 
     order.date = date
+    order.products = order.products.map(product => product.item.toString() );
     return order;
   })
+
+  console.log(orders[0].products[0]);
 
   res.render('user/orders',{orders,user:req.session.user});
 

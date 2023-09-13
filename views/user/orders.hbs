@@ -2,12 +2,11 @@
     <div class="text-center container py-5">
 
         {{#each orders}}
-        <div class="col-lg-12 col-md-12 mb-4">
+        <div class="col-lg-12 col-md-12 mb-4 mt-3">
             <div class="card cards">
                 <div class="card-body d-flex justify-content-around">
                     <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
                         data-mdb-ripple-color="light">
-                        <img src="/product-images/{{product._id}}.jpg" class="w-100" />
                     </div>
                     <h5 class="card-title mb-3">{{deliveryInfo.firstname}}</h5>
                     <p class="text-truncate">{{date}}</p>
